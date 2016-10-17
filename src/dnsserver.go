@@ -308,14 +308,19 @@ func (s *DNSServer) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 	}
 
 	// We didn't find a record corresponding to the query
-	if len(m.Answer) == 0 {
+	var emptyAnswer = (len(m.Answer) == 0)
+	if emptyAnswer && s.config.domainLess {
+		s.handleForward(w, r)
+		return
+	}
+
+	if emptyAnswer {
 		m.Ns = s.createSOA()
 		m.SetRcode(r, dns.RcodeNameError) // NXDOMAIN
 		if s.config.verbose {
 			log.Println("No DNS record found for " + query)
 		}
 	}
-
 	w.WriteMsg(m)
 }
 
