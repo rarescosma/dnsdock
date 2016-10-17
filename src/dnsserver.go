@@ -59,7 +59,11 @@ func NewDNSServer(c *Config) *DNSServer {
 	s.mux = dns.NewServeMux()
 	s.mux.HandleFunc(c.domain.String()+".", s.handleRequest)
 	s.mux.HandleFunc("in-addr.arpa.", s.handleReverseRequest)
-	s.mux.HandleFunc(".", s.handleForward)
+	if s.config.domainLess {
+		s.mux.HandleFunc(".", s.handleRequest)
+	} else {
+		s.mux.HandleFunc(".", s.handleForward)
+	}
 
 	s.server = &dns.Server{Addr: c.dnsAddr, Net: "udp", Handler: s.mux}
 
@@ -410,11 +414,13 @@ func (s *DNSServer) queryServices(query string) chan *Service {
 				test = append(test, strings.Split(strings.ToLower(service.Name), ".")...)
 			}
 
-			if len(service.Image) > 0 {
-				test = append(test, strings.Split(service.Image, ".")...)
-			}
+			if !s.config.verbose {
+				if len(service.Image) > 0 {
+					test = append(test, strings.Split(service.Image, ".")...)
+				}
 
-			test = append(test, s.config.domain...)
+				test = append(test, s.config.domain...)
+			}
 
 			if isPrefixQuery(query, test) {
 				c <- service

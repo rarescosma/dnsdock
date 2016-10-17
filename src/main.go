@@ -30,6 +30,7 @@ func main() {
 	flag.BoolVar(&config.verbose, "verbose", true, "Verbose output")
 	flag.IntVar(&config.ttl, "ttl", config.ttl, "TTL for matched requests")
 	flag.BoolVar(&config.createAlias, "create-alias", config.createAlias, "Automatically create an alias with just the container name.")
+	flag.BoolVar(&config.domainLess, "domainless", config.domainLess, "Handle container names without a domain.")
 
 	var showVersion bool
 	if len(version) > 0 {

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Domain represents a domain 
+// Domain represents a domain
 type Domain []string
 
 // NewDomain creates a new domain
@@ -56,6 +56,7 @@ type Config struct {
 	httpAddr    string
 	ttl         int
 	createAlias bool
+	domainLess  bool
 }
 
 // NewConfig creates a new config
