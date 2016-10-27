@@ -80,10 +80,10 @@ FROM easypi/alpine-arm
 {{end}}
 IMPORT ./dnsdock /bin/dnsdock
 ENTRYPOINT ["dnsdock"]
-TAG {{$DOCKER_USER}}/dnsdock:{{$DOCKERIMAGE_VERSION}}-{{$ARCH}}
-PUSH {{$DOCKER_USER}}/dnsdock:{{$DOCKERIMAGE_VERSION}}-{{$ARCH}}
+TAG {{$DOCKER_USER}}/kube_base_dnsdock:{{$DOCKERIMAGE_VERSION}}-{{$ARCH}}
+PUSH {{$DOCKER_USER}}/kube_base_dnsdock:{{$DOCKERIMAGE_VERSION}}-{{$ARCH}}
 
 {{if ne $DOCKERIMAGE_VERSION "dev"}}
-TAG {{$DOCKER_USER}}/dnsdock:latest-{{$ARCH}}
-PUSH {{$DOCKER_USER}}/dnsdock:latest-{{$ARCH}}
+TAG {{$DOCKER_USER}}/kube_base_dnsdock:latest-{{$ARCH}}
+PUSH {{$DOCKER_USER}}/kube_base_dnsdock:latest-{{$ARCH}}
 {{end}}
